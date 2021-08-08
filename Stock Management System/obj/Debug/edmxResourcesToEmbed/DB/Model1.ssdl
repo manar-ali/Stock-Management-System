@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="product_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="CATEGORIES">
+    <Key>
+      <PropertyRef Name="ID_CAT" />
+    </Key>
+    <Property Name="ID_CAT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DESCRIPTION_CAT" Type="varchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="CUSTOMERS">
+    <Key>
+      <PropertyRef Name="ID_CUSTOMER" />
+    </Key>
+    <Property Name="ID_CUSTOMER" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FIRST_NAME" Type="varchar" MaxLength="25" />
+    <Property Name="LAST_NAME" Type="varchar" MaxLength="25" />
+    <Property Name="TEL" Type="nvarchar" MaxLength="11" />
+    <Property Name="EMAIL" Type="varchar" MaxLength="25" />
+  </EntityType>
+  <EntityType Name="ORDERS">
+    <Key>
+      <PropertyRef Name="ID_ORDER" />
+    </Key>
+    <Property Name="ID_ORDER" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DATE_ORDER" Type="datetime" />
+    <Property Name="ID_CUSTOMER" Type="int" />
+    <Property Name="ProductNname" Type="varchar" MaxLength="50" />
+    <Property Name="Price" Type="int" />
+    <Property Name="QTE" Type="int" />
+    <Property Name="TPrice" Type="int" />
+    <Property Name="Num" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'product_DB.dbo.ORDERS_DETAILS' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="ORDERS_DETAILS">
+          <Property Name="ID_PRODUCT" Type="int" />
+          <Property Name="ID_ORDER" Type="int" />
+          <Property Name="QTE" Type="int" />
+        </EntityType>-->
+  <EntityType Name="PRODUCTS">
+    <Key>
+      <PropertyRef Name="ID_PRODUCT" />
+    </Key>
+    <Property Name="ID_PRODUCT" Type="int" Nullable="false" />
+    <Property Name="LABEL_PRODUCT" Type="varchar" MaxLength="30" />
+    <Property Name="QTE_IN_STOCK" Type="int" />
+    <Property Name="PRICE" Type="varchar" MaxLength="50" />
+    <Property Name="IMAGE_PRODUCT" Type="nvarchar(max)" />
+    <Property Name="ID_CAT" Type="int" />
+  </EntityType>
+  <EntityType Name="TBL_USERS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="PWD" Type="varchar" MaxLength="30" />
+    <Property Name="USER_TYPE" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <Association Name="FK__ORDERS__ID_CUSTO__70DDC3D8">
+    <End Role="CUSTOMERS" Type="Self.CUSTOMERS" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUSTOMERS">
+        <PropertyRef Name="ID_CUSTOMER" />
+      </Principal>
+      <Dependent Role="ORDERS">
+        <PropertyRef Name="ID_CUSTOMER" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <!--Errors Found During Generation:
+error 6004: The table 'product_DB.dbo.ORDERS_DETAILS' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__ORDERS_DE__ID_OR__797309D9" />-->
+  <!--Errors Found During Generation:
+error 6004: The table 'product_DB.dbo.ORDERS_DETAILS' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__ORDERS_DE__ID_PR__787EE5A0" />-->
+  <Association Name="FK__PRODUCTS__ID_CAT__76969D2E">
+    <End Role="CATEGORIES" Type="Self.CATEGORIES" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PRODUCTS" Type="Self.PRODUCTS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CATEGORIES">
+        <PropertyRef Name="ID_CAT" />
+      </Principal>
+      <Dependent Role="PRODUCTS">
+        <PropertyRef Name="ID_CAT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="ADD_PRODUCT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ID_PRODUCT" Type="varchar" Mode="In" />
+    <Parameter Name="LABEL_PRODUCT" Type="varchar" Mode="In" />
+    <Parameter Name="QTE_IN_STOCK" Type="int" Mode="In" />
+    <Parameter Name="PRICE" Type="varchar" Mode="In" />
+    <Parameter Name="IMAGE" Type="image" Mode="In" />
+    <Parameter Name="ID_CAT" Type="int" Mode="In" />
+  </Function>
+  <Function Name="DELETE_PRODUCT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ID_PRODUCT" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="Get_All_Categories" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="GET_PRODUCT_DETAILS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ID_PRODUCT" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="GET_PRODUCTS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ID_CAT" Type="int" Mode="In" />
+  </Function>
+  <Function Name="SP_LOGIN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ID" Type="varchar" Mode="In" />
+    <Parameter Name="PWD" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="UPDATE_PRODUCT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ID_PRODUCT" Type="varchar" Mode="In" />
+    <Parameter Name="LABEL_PRODUCT" Type="varchar" Mode="In" />
+    <Parameter Name="QTE_IN_STOCK" Type="int" Mode="In" />
+    <Parameter Name="PRICE" Type="varchar" Mode="In" />
+    <Parameter Name="IMAGE" Type="image" Mode="In" />
+    <Parameter Name="ID_CAT" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="product_DBModelStoreContainer">
+    <EntitySet Name="CATEGORIES" EntityType="Self.CATEGORIES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CUSTOMERS" EntityType="Self.CUSTOMERS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ORDERS" EntityType="Self.ORDERS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCTS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBL_USERS" EntityType="Self.TBL_USERS" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__ORDERS__ID_CUSTO__70DDC3D8" Association="Self.FK__ORDERS__ID_CUSTO__70DDC3D8">
+      <End Role="CUSTOMERS" EntitySet="CUSTOMERS" />
+      <End Role="ORDERS" EntitySet="ORDERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PRODUCTS__ID_CAT__76969D2E" Association="Self.FK__PRODUCTS__ID_CAT__76969D2E">
+      <End Role="CATEGORIES" EntitySet="CATEGORIES" />
+      <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

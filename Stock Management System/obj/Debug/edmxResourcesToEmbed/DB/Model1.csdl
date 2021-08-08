@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="product_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="CATEGORy">
+    <Key>
+      <PropertyRef Name="ID_CAT" />
+    </Key>
+    <Property Name="ID_CAT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DESCRIPTION_CAT" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="PRODUCTS" Relationship="Self.FK__PRODUCTS__ID_CAT__76969D2E" FromRole="CATEGORIES" ToRole="PRODUCTS" />
+  </EntityType>
+  <EntityType Name="CUSTOMER">
+    <Key>
+      <PropertyRef Name="ID_CUSTOMER" />
+    </Key>
+    <Property Name="ID_CUSTOMER" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FIRST_NAME" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="LAST_NAME" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="TEL" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+    <Property Name="EMAIL" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ORDERS" Relationship="Self.FK__ORDERS__ID_CUSTO__70DDC3D8" FromRole="CUSTOMERS" ToRole="ORDERS" />
+  </EntityType>
+  <EntityType Name="ORDER">
+    <Key>
+      <PropertyRef Name="ID_ORDER" />
+    </Key>
+    <Property Name="ID_ORDER" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DATE_ORDER" Type="DateTime" Precision="3" />
+    <Property Name="ID_CUSTOMER" Type="Int32" />
+    <Property Name="ProductNname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Price" Type="Int32" />
+    <Property Name="QTE" Type="Int32" />
+    <Property Name="TPrice" Type="Int32" />
+    <Property Name="Num" Type="Int32" />
+    <NavigationProperty Name="CUSTOMER" Relationship="Self.FK__ORDERS__ID_CUSTO__70DDC3D8" FromRole="ORDERS" ToRole="CUSTOMERS" />
+  </EntityType>
+  <EntityType Name="PRODUCT">
+    <Key>
+      <PropertyRef Name="ID_PRODUCT" />
+    </Key>
+    <Property Name="ID_PRODUCT" Type="Int32" Nullable="false" />
+    <Property Name="LABEL_PRODUCT" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="QTE_IN_STOCK" Type="Int32" />
+    <Property Name="PRICE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IMAGE_PRODUCT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ID_CAT" Type="Int32" />
+    <NavigationProperty Name="CATEGORy" Relationship="Self.FK__PRODUCTS__ID_CAT__76969D2E" FromRole="PRODUCTS" ToRole="CATEGORIES" />
+  </EntityType>
+  <EntityType Name="TBL_USERS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PWD" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="USER_TYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK__PRODUCTS__ID_CAT__76969D2E">
+    <End Role="CATEGORIES" Type="Self.CATEGORy" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PRODUCTS" Type="Self.PRODUCT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CATEGORIES">
+        <PropertyRef Name="ID_CAT" />
+      </Principal>
+      <Dependent Role="PRODUCTS">
+        <PropertyRef Name="ID_CAT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ORDERS__ID_CUSTO__70DDC3D8">
+    <End Role="CUSTOMERS" Type="Self.CUSTOMER" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ORDERS" Type="Self.ORDER" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUSTOMERS">
+        <PropertyRef Name="ID_CUSTOMER" />
+      </Principal>
+      <Dependent Role="ORDERS">
+        <PropertyRef Name="ID_CUSTOMER" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="product_DBEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CATEGORIES" EntityType="Self.CATEGORy" />
+    <EntitySet Name="CUSTOMERS" EntityType="Self.CUSTOMER" />
+    <EntitySet Name="ORDERS" EntityType="Self.ORDER" />
+    <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCT" />
+    <EntitySet Name="TBL_USERS" EntityType="Self.TBL_USERS" />
+    <AssociationSet Name="FK__PRODUCTS__ID_CAT__76969D2E" Association="Self.FK__PRODUCTS__ID_CAT__76969D2E">
+      <End Role="CATEGORIES" EntitySet="CATEGORIES" />
+      <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ORDERS__ID_CUSTO__70DDC3D8" Association="Self.FK__ORDERS__ID_CUSTO__70DDC3D8">
+      <End Role="CUSTOMERS" EntitySet="CUSTOMERS" />
+      <End Role="ORDERS" EntitySet="ORDERS" />
+    </AssociationSet>
+    <FunctionImport Name="ADD_PRODUCT">
+      <Parameter Name="ID_PRODUCT" Mode="In" Type="String" />
+      <Parameter Name="LABEL_PRODUCT" Mode="In" Type="String" />
+      <Parameter Name="QTE_IN_STOCK" Mode="In" Type="Int32" />
+      <Parameter Name="PRICE" Mode="In" Type="String" />
+      <Parameter Name="IMAGE" Mode="In" Type="Binary" />
+      <Parameter Name="ID_CAT" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="DELETE_PRODUCT">
+      <Parameter Name="ID_PRODUCT" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="Get_All_Categories" ReturnType="Collection(product_DBModel.Get_All_Categories_Result)" />
+    <FunctionImport Name="GET_PRODUCT_DETAILS" ReturnType="Collection(product_DBModel.GET_PRODUCT_DETAILS_Result)">
+      <Parameter Name="ID_PRODUCT" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="GET_PRODUCTS" ReturnType="Collection(product_DBModel.GET_PRODUCTS_Result)">
+      <Parameter Name="ID_CAT" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="SP_LOGIN" ReturnType="Collection(product_DBModel.SP_LOGIN_Result)">
+      <Parameter Name="ID" Mode="In" Type="String" />
+      <Parameter Name="PWD" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="UPDATE_PRODUCT">
+      <Parameter Name="ID_PRODUCT" Mode="In" Type="String" />
+      <Parameter Name="LABEL_PRODUCT" Mode="In" Type="String" />
+      <Parameter Name="QTE_IN_STOCK" Mode="In" Type="Int32" />
+      <Parameter Name="PRICE" Mode="In" Type="String" />
+      <Parameter Name="IMAGE" Mode="In" Type="Binary" />
+      <Parameter Name="ID_CAT" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="Get_All_Categories_Result">
+    <Property Type="Int32" Name="ID_CAT" Nullable="false" />
+    <Property Type="String" Name="DESCRIPTION_CAT" Nullable="true" MaxLength="30" />
+  </ComplexType>
+  <ComplexType Name="GET_PRODUCT_DETAILS_Result">
+    <Property Type="Int32" Name="ID_PRODUCT" Nullable="false" />
+    <Property Type="String" Name="LABEL_PRODUCT" Nullable="true" MaxLength="30" />
+    <Property Type="Int32" Name="QTE_IN_STOCK" Nullable="true" />
+    <Property Type="String" Name="PRICE" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="IMAGE_PRODUCT" Nullable="true" />
+    <Property Type="Int32" Name="ID_CAT" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="GET_PRODUCTS_Result">
+    <Property Type="Int32" Name="ID_PRODUCT" Nullable="false" />
+    <Property Type="String" Name="LABEL_PRODUCT" Nullable="true" MaxLength="30" />
+    <Property Type="Int32" Name="QTE_IN_STOCK" Nullable="true" />
+    <Property Type="String" Name="PRICE" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="IMAGE_PRODUCT" Nullable="true" />
+    <Property Type="Int32" Name="ID_CAT" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="SP_LOGIN_Result">
+    <Property Type="String" Name="ID" Nullable="false" MaxLength="30" />
+    <Property Type="String" Name="PWD" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="USER_TYPE" Nullable="true" MaxLength="20" />
+  </ComplexType>
+</Schema>

@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="product_DBModelStoreContainer" CdmEntityContainer="product_DBEntities1">
+    <EntitySetMapping Name="CATEGORIES">
+      <EntityTypeMapping TypeName="product_DBModel.CATEGORy">
+        <MappingFragment StoreEntitySet="CATEGORIES">
+          <ScalarProperty Name="ID_CAT" ColumnName="ID_CAT" />
+          <ScalarProperty Name="DESCRIPTION_CAT" ColumnName="DESCRIPTION_CAT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CUSTOMERS">
+      <EntityTypeMapping TypeName="product_DBModel.CUSTOMER">
+        <MappingFragment StoreEntitySet="CUSTOMERS">
+          <ScalarProperty Name="ID_CUSTOMER" ColumnName="ID_CUSTOMER" />
+          <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+          <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+          <ScalarProperty Name="TEL" ColumnName="TEL" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ORDERS">
+      <EntityTypeMapping TypeName="product_DBModel.ORDER">
+        <MappingFragment StoreEntitySet="ORDERS">
+          <ScalarProperty Name="ID_ORDER" ColumnName="ID_ORDER" />
+          <ScalarProperty Name="DATE_ORDER" ColumnName="DATE_ORDER" />
+          <ScalarProperty Name="ID_CUSTOMER" ColumnName="ID_CUSTOMER" />
+          <ScalarProperty Name="ProductNname" ColumnName="ProductNname" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="QTE" ColumnName="QTE" />
+          <ScalarProperty Name="TPrice" ColumnName="TPrice" />
+          <ScalarProperty Name="Num" ColumnName="Num" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PRODUCTS">
+      <EntityTypeMapping TypeName="product_DBModel.PRODUCT">
+        <MappingFragment StoreEntitySet="PRODUCTS">
+          <ScalarProperty Name="ID_PRODUCT" ColumnName="ID_PRODUCT" />
+          <ScalarProperty Name="LABEL_PRODUCT" ColumnName="LABEL_PRODUCT" />
+          <ScalarProperty Name="QTE_IN_STOCK" ColumnName="QTE_IN_STOCK" />
+          <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+          <ScalarProperty Name="IMAGE_PRODUCT" ColumnName="IMAGE_PRODUCT" />
+          <ScalarProperty Name="ID_CAT" ColumnName="ID_CAT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TBL_USERS">
+      <EntityTypeMapping TypeName="product_DBModel.TBL_USERS">
+        <MappingFragment StoreEntitySet="TBL_USERS">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="PWD" ColumnName="PWD" />
+          <ScalarProperty Name="USER_TYPE" ColumnName="USER_TYPE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="ADD_PRODUCT" FunctionName="product_DBModel.Store.ADD_PRODUCT" />
+    <FunctionImportMapping FunctionImportName="DELETE_PRODUCT" FunctionName="product_DBModel.Store.DELETE_PRODUCT" />
+    <FunctionImportMapping FunctionImportName="Get_All_Categories" FunctionName="product_DBModel.Store.Get_All_Categories">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="product_DBModel.Get_All_Categories_Result">
+          <ScalarProperty Name="ID_CAT" ColumnName="ID_CAT" />
+          <ScalarProperty Name="DESCRIPTION_CAT" ColumnName="DESCRIPTION_CAT" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GET_PRODUCT_DETAILS" FunctionName="product_DBModel.Store.GET_PRODUCT_DETAILS">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="product_DBModel.GET_PRODUCT_DETAILS_Result">
+          <ScalarProperty Name="ID_PRODUCT" ColumnName="ID_PRODUCT" />
+          <ScalarProperty Name="LABEL_PRODUCT" ColumnName="LABEL_PRODUCT" />
+          <ScalarProperty Name="QTE_IN_STOCK" ColumnName="QTE_IN_STOCK" />
+          <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+          <ScalarProperty Name="IMAGE_PRODUCT" ColumnName="IMAGE_PRODUCT" />
+          <ScalarProperty Name="ID_CAT" ColumnName="ID_CAT" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GET_PRODUCTS" FunctionName="product_DBModel.Store.GET_PRODUCTS">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="product_DBModel.GET_PRODUCTS_Result">
+          <ScalarProperty Name="ID_PRODUCT" ColumnName="ID_PRODUCT" />
+          <ScalarProperty Name="LABEL_PRODUCT" ColumnName="LABEL_PRODUCT" />
+          <ScalarProperty Name="QTE_IN_STOCK" ColumnName="QTE_IN_STOCK" />
+          <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+          <ScalarProperty Name="IMAGE_PRODUCT" ColumnName="IMAGE_PRODUCT" />
+          <ScalarProperty Name="ID_CAT" ColumnName="ID_CAT" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_LOGIN" FunctionName="product_DBModel.Store.SP_LOGIN">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="product_DBModel.SP_LOGIN_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="PWD" ColumnName="PWD" />
+          <ScalarProperty Name="USER_TYPE" ColumnName="USER_TYPE" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="UPDATE_PRODUCT" FunctionName="product_DBModel.Store.UPDATE_PRODUCT" />
+  </EntityContainerMapping>
+</Mapping>

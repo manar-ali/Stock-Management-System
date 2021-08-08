@@ -1,0 +1,426 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="product_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CATEGORIES">
+          <Key>
+            <PropertyRef Name="ID_CAT" />
+          </Key>
+          <Property Name="ID_CAT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCRIPTION_CAT" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="CUSTOMERS">
+          <Key>
+            <PropertyRef Name="ID_CUSTOMER" />
+          </Key>
+          <Property Name="ID_CUSTOMER" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FIRST_NAME" Type="varchar" MaxLength="25" />
+          <Property Name="LAST_NAME" Type="varchar" MaxLength="25" />
+          <Property Name="TEL" Type="nvarchar" MaxLength="11" />
+          <Property Name="EMAIL" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="ORDERS">
+          <Key>
+            <PropertyRef Name="ID_ORDER" />
+          </Key>
+          <Property Name="ID_ORDER" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATE_ORDER" Type="datetime" />
+          <Property Name="ID_CUSTOMER" Type="int" />
+          <Property Name="ProductNname" Type="varchar" MaxLength="50" />
+          <Property Name="Price" Type="int" />
+          <Property Name="QTE" Type="int" />
+          <Property Name="TPrice" Type="int" />
+          <Property Name="Num" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'product_DB.dbo.ORDERS_DETAILS' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="ORDERS_DETAILS">
+          <Property Name="ID_PRODUCT" Type="int" />
+          <Property Name="ID_ORDER" Type="int" />
+          <Property Name="QTE" Type="int" />
+        </EntityType>-->
+        <EntityType Name="PRODUCTS">
+          <Key>
+            <PropertyRef Name="ID_PRODUCT" />
+          </Key>
+          <Property Name="ID_PRODUCT" Type="int" Nullable="false" />
+          <Property Name="LABEL_PRODUCT" Type="varchar" MaxLength="30" />
+          <Property Name="QTE_IN_STOCK" Type="int" />
+          <Property Name="PRICE" Type="varchar" MaxLength="50" />
+          <Property Name="IMAGE_PRODUCT" Type="nvarchar(max)" />
+          <Property Name="ID_CAT" Type="int" />
+        </EntityType>
+        <EntityType Name="TBL_USERS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="PWD" Type="varchar" MaxLength="30" />
+          <Property Name="USER_TYPE" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK__ORDERS__ID_CUSTO__70DDC3D8">
+          <End Role="CUSTOMERS" Type="Self.CUSTOMERS" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMERS">
+              <PropertyRef Name="ID_CUSTOMER" />
+            </Principal>
+            <Dependent Role="ORDERS">
+              <PropertyRef Name="ID_CUSTOMER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <!--Errors Found During Generation:
+error 6004: The table 'product_DB.dbo.ORDERS_DETAILS' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__ORDERS_DE__ID_OR__797309D9" />-->
+        <!--Errors Found During Generation:
+error 6004: The table 'product_DB.dbo.ORDERS_DETAILS' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__ORDERS_DE__ID_PR__787EE5A0" />-->
+        <Association Name="FK__PRODUCTS__ID_CAT__76969D2E">
+          <End Role="CATEGORIES" Type="Self.CATEGORIES" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PRODUCTS" Type="Self.PRODUCTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIES">
+              <PropertyRef Name="ID_CAT" />
+            </Principal>
+            <Dependent Role="PRODUCTS">
+              <PropertyRef Name="ID_CAT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="ADD_PRODUCT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_PRODUCT" Type="varchar" Mode="In" />
+          <Parameter Name="LABEL_PRODUCT" Type="varchar" Mode="In" />
+          <Parameter Name="QTE_IN_STOCK" Type="int" Mode="In" />
+          <Parameter Name="PRICE" Type="varchar" Mode="In" />
+          <Parameter Name="IMAGE" Type="image" Mode="In" />
+          <Parameter Name="ID_CAT" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DELETE_PRODUCT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_PRODUCT" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Get_All_Categories" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GET_PRODUCT_DETAILS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_PRODUCT" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GET_PRODUCTS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_CAT" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_LOGIN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="varchar" Mode="In" />
+          <Parameter Name="PWD" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="UPDATE_PRODUCT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_PRODUCT" Type="varchar" Mode="In" />
+          <Parameter Name="LABEL_PRODUCT" Type="varchar" Mode="In" />
+          <Parameter Name="QTE_IN_STOCK" Type="int" Mode="In" />
+          <Parameter Name="PRICE" Type="varchar" Mode="In" />
+          <Parameter Name="IMAGE" Type="image" Mode="In" />
+          <Parameter Name="ID_CAT" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="product_DBModelStoreContainer">
+          <EntitySet Name="CATEGORIES" EntityType="Self.CATEGORIES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CUSTOMERS" EntityType="Self.CUSTOMERS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORDERS" EntityType="Self.ORDERS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBL_USERS" EntityType="Self.TBL_USERS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__ORDERS__ID_CUSTO__70DDC3D8" Association="Self.FK__ORDERS__ID_CUSTO__70DDC3D8">
+            <End Role="CUSTOMERS" EntitySet="CUSTOMERS" />
+            <End Role="ORDERS" EntitySet="ORDERS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PRODUCTS__ID_CAT__76969D2E" Association="Self.FK__PRODUCTS__ID_CAT__76969D2E">
+            <End Role="CATEGORIES" EntitySet="CATEGORIES" />
+            <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="product_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CATEGORy">
+          <Key>
+            <PropertyRef Name="ID_CAT" />
+          </Key>
+          <Property Name="ID_CAT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIPTION_CAT" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PRODUCTS" Relationship="Self.FK__PRODUCTS__ID_CAT__76969D2E" FromRole="CATEGORIES" ToRole="PRODUCTS" />
+        </EntityType>
+        <EntityType Name="CUSTOMER">
+          <Key>
+            <PropertyRef Name="ID_CUSTOMER" />
+          </Key>
+          <Property Name="ID_CUSTOMER" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FIRST_NAME" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="LAST_NAME" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="TEL" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ORDERS" Relationship="Self.FK__ORDERS__ID_CUSTO__70DDC3D8" FromRole="CUSTOMERS" ToRole="ORDERS" />
+        </EntityType>
+        <EntityType Name="ORDER">
+          <Key>
+            <PropertyRef Name="ID_ORDER" />
+          </Key>
+          <Property Name="ID_ORDER" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATE_ORDER" Type="DateTime" Precision="3" />
+          <Property Name="ID_CUSTOMER" Type="Int32" />
+          <Property Name="ProductNname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Int32" />
+          <Property Name="QTE" Type="Int32" />
+          <Property Name="TPrice" Type="Int32" />
+          <Property Name="Num" Type="Int32" />
+          <NavigationProperty Name="CUSTOMER" Relationship="Self.FK__ORDERS__ID_CUSTO__70DDC3D8" FromRole="ORDERS" ToRole="CUSTOMERS" />
+        </EntityType>
+        <EntityType Name="PRODUCT">
+          <Key>
+            <PropertyRef Name="ID_PRODUCT" />
+          </Key>
+          <Property Name="ID_PRODUCT" Type="Int32" Nullable="false" />
+          <Property Name="LABEL_PRODUCT" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="QTE_IN_STOCK" Type="Int32" />
+          <Property Name="PRICE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IMAGE_PRODUCT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ID_CAT" Type="Int32" />
+          <NavigationProperty Name="CATEGORy" Relationship="Self.FK__PRODUCTS__ID_CAT__76969D2E" FromRole="PRODUCTS" ToRole="CATEGORIES" />
+        </EntityType>
+        <EntityType Name="TBL_USERS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PWD" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="USER_TYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK__PRODUCTS__ID_CAT__76969D2E">
+          <End Role="CATEGORIES" Type="Self.CATEGORy" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PRODUCTS" Type="Self.PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIES">
+              <PropertyRef Name="ID_CAT" />
+            </Principal>
+            <Dependent Role="PRODUCTS">
+              <PropertyRef Name="ID_CAT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ORDERS__ID_CUSTO__70DDC3D8">
+          <End Role="CUSTOMERS" Type="Self.CUSTOMER" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ORDERS" Type="Self.ORDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMERS">
+              <PropertyRef Name="ID_CUSTOMER" />
+            </Principal>
+            <Dependent Role="ORDERS">
+              <PropertyRef Name="ID_CUSTOMER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="product_DBEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CATEGORIES" EntityType="Self.CATEGORy" />
+          <EntitySet Name="CUSTOMERS" EntityType="Self.CUSTOMER" />
+          <EntitySet Name="ORDERS" EntityType="Self.ORDER" />
+          <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCT" />
+          <EntitySet Name="TBL_USERS" EntityType="Self.TBL_USERS" />
+          <AssociationSet Name="FK__PRODUCTS__ID_CAT__76969D2E" Association="Self.FK__PRODUCTS__ID_CAT__76969D2E">
+            <End Role="CATEGORIES" EntitySet="CATEGORIES" />
+            <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ORDERS__ID_CUSTO__70DDC3D8" Association="Self.FK__ORDERS__ID_CUSTO__70DDC3D8">
+            <End Role="CUSTOMERS" EntitySet="CUSTOMERS" />
+            <End Role="ORDERS" EntitySet="ORDERS" />
+          </AssociationSet>
+          <FunctionImport Name="ADD_PRODUCT">
+            <Parameter Name="ID_PRODUCT" Mode="In" Type="String" />
+            <Parameter Name="LABEL_PRODUCT" Mode="In" Type="String" />
+            <Parameter Name="QTE_IN_STOCK" Mode="In" Type="Int32" />
+            <Parameter Name="PRICE" Mode="In" Type="String" />
+            <Parameter Name="IMAGE" Mode="In" Type="Binary" />
+            <Parameter Name="ID_CAT" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DELETE_PRODUCT">
+            <Parameter Name="ID_PRODUCT" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Get_All_Categories" ReturnType="Collection(product_DBModel.Get_All_Categories_Result)" />
+          <FunctionImport Name="GET_PRODUCT_DETAILS" ReturnType="Collection(product_DBModel.GET_PRODUCT_DETAILS_Result)">
+            <Parameter Name="ID_PRODUCT" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GET_PRODUCTS" ReturnType="Collection(product_DBModel.GET_PRODUCTS_Result)">
+            <Parameter Name="ID_CAT" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_LOGIN" ReturnType="Collection(product_DBModel.SP_LOGIN_Result)">
+            <Parameter Name="ID" Mode="In" Type="String" />
+            <Parameter Name="PWD" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UPDATE_PRODUCT">
+            <Parameter Name="ID_PRODUCT" Mode="In" Type="String" />
+            <Parameter Name="LABEL_PRODUCT" Mode="In" Type="String" />
+            <Parameter Name="QTE_IN_STOCK" Mode="In" Type="Int32" />
+            <Parameter Name="PRICE" Mode="In" Type="String" />
+            <Parameter Name="IMAGE" Mode="In" Type="Binary" />
+            <Parameter Name="ID_CAT" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="Get_All_Categories_Result">
+          <Property Type="Int32" Name="ID_CAT" Nullable="false" />
+          <Property Type="String" Name="DESCRIPTION_CAT" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="GET_PRODUCT_DETAILS_Result">
+          <Property Type="Int32" Name="ID_PRODUCT" Nullable="false" />
+          <Property Type="String" Name="LABEL_PRODUCT" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="QTE_IN_STOCK" Nullable="true" />
+          <Property Type="String" Name="PRICE" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="IMAGE_PRODUCT" Nullable="true" />
+          <Property Type="Int32" Name="ID_CAT" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GET_PRODUCTS_Result">
+          <Property Type="Int32" Name="ID_PRODUCT" Nullable="false" />
+          <Property Type="String" Name="LABEL_PRODUCT" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="QTE_IN_STOCK" Nullable="true" />
+          <Property Type="String" Name="PRICE" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="IMAGE_PRODUCT" Nullable="true" />
+          <Property Type="Int32" Name="ID_CAT" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_LOGIN_Result">
+          <Property Type="String" Name="ID" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="PWD" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="USER_TYPE" Nullable="true" MaxLength="20" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="product_DBModelStoreContainer" CdmEntityContainer="product_DBEntities1">
+          <EntitySetMapping Name="CATEGORIES">
+            <EntityTypeMapping TypeName="product_DBModel.CATEGORy">
+              <MappingFragment StoreEntitySet="CATEGORIES">
+                <ScalarProperty Name="ID_CAT" ColumnName="ID_CAT" />
+                <ScalarProperty Name="DESCRIPTION_CAT" ColumnName="DESCRIPTION_CAT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTOMERS">
+            <EntityTypeMapping TypeName="product_DBModel.CUSTOMER">
+              <MappingFragment StoreEntitySet="CUSTOMERS">
+                <ScalarProperty Name="ID_CUSTOMER" ColumnName="ID_CUSTOMER" />
+                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+                <ScalarProperty Name="TEL" ColumnName="TEL" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORDERS">
+            <EntityTypeMapping TypeName="product_DBModel.ORDER">
+              <MappingFragment StoreEntitySet="ORDERS">
+                <ScalarProperty Name="ID_ORDER" ColumnName="ID_ORDER" />
+                <ScalarProperty Name="DATE_ORDER" ColumnName="DATE_ORDER" />
+                <ScalarProperty Name="ID_CUSTOMER" ColumnName="ID_CUSTOMER" />
+                <ScalarProperty Name="ProductNname" ColumnName="ProductNname" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="QTE" ColumnName="QTE" />
+                <ScalarProperty Name="TPrice" ColumnName="TPrice" />
+                <ScalarProperty Name="Num" ColumnName="Num" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCTS">
+            <EntityTypeMapping TypeName="product_DBModel.PRODUCT">
+              <MappingFragment StoreEntitySet="PRODUCTS">
+                <ScalarProperty Name="ID_PRODUCT" ColumnName="ID_PRODUCT" />
+                <ScalarProperty Name="LABEL_PRODUCT" ColumnName="LABEL_PRODUCT" />
+                <ScalarProperty Name="QTE_IN_STOCK" ColumnName="QTE_IN_STOCK" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="IMAGE_PRODUCT" ColumnName="IMAGE_PRODUCT" />
+                <ScalarProperty Name="ID_CAT" ColumnName="ID_CAT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_USERS">
+            <EntityTypeMapping TypeName="product_DBModel.TBL_USERS">
+              <MappingFragment StoreEntitySet="TBL_USERS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PWD" ColumnName="PWD" />
+                <ScalarProperty Name="USER_TYPE" ColumnName="USER_TYPE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ADD_PRODUCT" FunctionName="product_DBModel.Store.ADD_PRODUCT" />
+          <FunctionImportMapping FunctionImportName="DELETE_PRODUCT" FunctionName="product_DBModel.Store.DELETE_PRODUCT" />
+          <FunctionImportMapping FunctionImportName="Get_All_Categories" FunctionName="product_DBModel.Store.Get_All_Categories">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="product_DBModel.Get_All_Categories_Result">
+                <ScalarProperty Name="ID_CAT" ColumnName="ID_CAT" />
+                <ScalarProperty Name="DESCRIPTION_CAT" ColumnName="DESCRIPTION_CAT" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GET_PRODUCT_DETAILS" FunctionName="product_DBModel.Store.GET_PRODUCT_DETAILS">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="product_DBModel.GET_PRODUCT_DETAILS_Result">
+                <ScalarProperty Name="ID_PRODUCT" ColumnName="ID_PRODUCT" />
+                <ScalarProperty Name="LABEL_PRODUCT" ColumnName="LABEL_PRODUCT" />
+                <ScalarProperty Name="QTE_IN_STOCK" ColumnName="QTE_IN_STOCK" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="IMAGE_PRODUCT" ColumnName="IMAGE_PRODUCT" />
+                <ScalarProperty Name="ID_CAT" ColumnName="ID_CAT" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GET_PRODUCTS" FunctionName="product_DBModel.Store.GET_PRODUCTS">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="product_DBModel.GET_PRODUCTS_Result">
+                <ScalarProperty Name="ID_PRODUCT" ColumnName="ID_PRODUCT" />
+                <ScalarProperty Name="LABEL_PRODUCT" ColumnName="LABEL_PRODUCT" />
+                <ScalarProperty Name="QTE_IN_STOCK" ColumnName="QTE_IN_STOCK" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="IMAGE_PRODUCT" ColumnName="IMAGE_PRODUCT" />
+                <ScalarProperty Name="ID_CAT" ColumnName="ID_CAT" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_LOGIN" FunctionName="product_DBModel.Store.SP_LOGIN">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="product_DBModel.SP_LOGIN_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PWD" ColumnName="PWD" />
+                <ScalarProperty Name="USER_TYPE" ColumnName="USER_TYPE" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UPDATE_PRODUCT" FunctionName="product_DBModel.Store.UPDATE_PRODUCT" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
